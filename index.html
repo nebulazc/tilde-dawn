@@ -9,29 +9,6 @@
     theme: 'tilde-dark',
 
     /**
-     * Action to take when the clock is clicked. Options include:
-     *
-     * - "Help" to show the help menu
-     * - "Search" to show the search input (useful on mobile)
-     */
-    clockOnClickAction: 'Help',
-
-    /**
-     * The delimiter between the hours, minutes and seconds on the clock.
-     */
-    clockDelimiter: ' – ',
-
-    /**
-     * Show seconds on the clock. A monospaced font is recommended for this.
-     */
-    clockShowSeconds: false,
-
-    /**
-     * Show AM/PM indication when CONFIG.clockTwentyFourHours is false.
-     */
-    clockShowAmPm: true,
-
-    /**
      * Show a twenty-four-hour clock instead of a twelve-hour clock.
      */
     clockTwentyFourHour: true,
@@ -461,6 +438,9 @@
     padding: 0;
     background: var(--base-background);
     color: var(--base-foreground);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   input,
@@ -501,6 +481,14 @@
 
   /* reusable classes */
 
+  .col {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
   .center {
     display: flex;
     width: 100%;
@@ -512,15 +500,26 @@
   }
 
   .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     overflow: auto;
   }
 
   /* main styles */
+
+  .container {
+    width: 70rem;
+    height: 32rem;
+    background-color: #242424;
+  }
+
+  #col-1 {
+    width: 21rem;
+
+    background-color: #333;
+  }
+
+  #col-2 {
+    width: 49rem;
+  }
 
   .clock {
     display: block;
@@ -528,9 +527,14 @@
     cursor: pointer;
   }
 
+  .calendar {
+    display: block;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
   .help {
     background: var(--base-background);
-    visibility: hidden;
     z-index: 1;
   }
 
@@ -640,21 +644,27 @@
   }
 </style>
 
-<div class="center">
-  <time class="clock" id="clock" />
-</div>
-<form
-  autocomplete="off"
-  class="center overlay search-form"
-  id="search-form"
-  spellcheck="false"
->
-  <div class="search-form-content">
-    <input class="search-input" id="search-input" title="search" type="text" />
-    <ul class="search-suggestions" id="search-suggestions" />
+<div class="container">
+  <div id="col-1" class="col">
+    <time id="clock" class="clock"></time>
+    <time id="date" class="calendar"></time>
+    
   </div>
-</form>
-<aside class="center help overlay" id="help" />
+  <div id="col-2" class="col">
+    <aside id="help" />
+    <form autocomplete="off"
+          class="center overlay search-form"
+          id="search-form"
+          spellcheck="false" >
+      <div class="search-form-content">
+        <input class="search-input" id="search-input" title="search" type="text" />
+        <ul class="search-suggestions" id="search-suggestions" />
+      </div>
+    </form>
+
+    
+  </div>
+</div>
 
 <script>
   const $ = {
@@ -714,33 +724,40 @@
 
   class Clock {
     constructor(options) {
-      this._el = $.el('#clock');
-      this._amPm = options.amPm;
-      this._delimiter = options.delimiter;
-      this._showSeconds = options.showSeconds;
+      this._cel = $.el('#clock');
+      this._del = $.el('#date');
+      this._delimiter = options.clockDelimiter;
       this._timeZone = options.timeZone;
       this._twentyFourHour = options.twentyFourHour;
       this._setTime = this._setTime.bind(this);
-      this._el.addEventListener('click', options.onClick);
       this._start();
     }
 
     _setTime() {
       const date = new Date();
 
-      this._el.innerHTML = date
-        .toLocaleString('en-US', {
+      this._cel.innerHTML = date
+        .toLocaleString('fr-FR', {
           hour12: !this._twentyFourHour,
           hour: 'numeric',
           minute: 'numeric',
-          second: this._showSeconds ? 'numeric' : undefined,
           timeZone: this._timeZone,
         })
-        .replace(this._amPm ? '' : / (AM|PM)/, '')
-        .replace(/:/g, this._delimiter)
+        .replace(/:/g, '<br/>')
+        .replace(/^0/, '');
+      
+        this._del.innerHTML = date
+        .toLocaleString('fr-FR', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          timeZone: this._timeZone,
+        })
         .replace(/^0/, '');
 
-      this._el.setAttribute('datetime', date.toTimeString());
+
+      this._cel.setAttribute('datetime', date.toTimeString());
+      this._del.setAttribute('datetime', date.toTimeString());
     }
 
     _start() {
