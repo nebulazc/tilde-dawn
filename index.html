@@ -120,6 +120,11 @@
     commands: [
       {
         key: '*',
+        search: '/?q={}',
+        url: 'https://www.qwant.com',
+      },
+      {
+        key: 'gle',
         search: '/search?q={}',
         url: 'https://www.google.com',
       },
@@ -367,8 +372,8 @@
     --base-foreground: #ddd;
     --command-color-complementary: #eee;
     --command-color-highlight-foreground: var(--base-background);
-    --command-color-lightness: 50%;
-    --command-color-saturation: 40%;
+    --command-color-lightness: 40%;
+    --command-color-saturation: 45%;
     --help-command-background: #121212;
   }
 
@@ -386,7 +391,7 @@
     --command-height: 3rem;
     --command-padding: 1rem;
     --help-grid-gap: 0rem;
-    --search-input-font-size: 2rem;
+    --search-input-font-size: 3rem;
     --search-input-text-align: left;
     --suggestion-height: 3rem;
     --suggestion-padding: calc(var(--suggestion-height) / 2 - 1ch / 2);
@@ -535,6 +540,7 @@
   .clock {
     display: block;
     font-size: var(--clock-font-size);
+    line-height: 6rem;
   }
 
   .calendar {
@@ -624,12 +630,11 @@
   .search-input {
     width: 100%;
     font-size: var(--search-input-font-size);
-    font-weight: var(--base-font-weight-black);
+    font-weight: var(--base-font-weight-bold);
     text-align: center;
   }
 
   .search-suggestions {
-    display: none;
     justify-content: center;
     align-items: center;
     flex-direction: var(--suggestions-flex-direction);
@@ -643,7 +648,6 @@
   }
 
   .search-suggestion {
-    border-radius: var(--base-border-radius);
     cursor: pointer;
     font-weight: var(--base-font-weight-bold);
     height: var(--suggestion-height);
