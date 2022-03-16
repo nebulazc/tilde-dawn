@@ -483,10 +483,7 @@
 
   .col {
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+
   }
 
   .center {
@@ -506,13 +503,27 @@
   /* main styles */
 
   .container {
+    display: flex;
+    flex-direction: row;
     width: 70rem;
     height: 32rem;
     background-color: #242424;
   }
 
+  #commands-container {
+    transition: .2s ease-in-out;
+  }
+
+  #form-container {
+  }
+
   #col-1 {
     width: 21rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     background-color: #333;
   }
@@ -583,16 +594,22 @@
   }
 
   .search-form {
-    background: var(--base-background);
-    visibility: hidden;
+    opacity: 0;
+    transition: .2s ease-in-out;
+    position: absolute;
+    width: 49rem;
+    height: 32rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   body.form .search-form {
-    visibility: visible;
+    opacity: 1;
   }
 
-  body.color .search-form {
-    color: var(--command-color-complementary);
+  body.form #commands-container {
+    opacity: 0;
   }
 
   .search-form-content {
@@ -651,16 +668,19 @@
     
   </div>
   <div id="col-2" class="col">
-    <aside id="help" />
-    <form autocomplete="off"
-          class="center overlay search-form"
-          id="search-form"
-          spellcheck="false" >
-      <div class="search-form-content">
-        <input class="search-input" id="search-input" title="search" type="text" />
-        <ul class="search-suggestions" id="search-suggestions" />
-      </div>
-    </form>
+    <div id="form-container">
+      <form autocomplete="off"
+            class="search-form"
+            id="search-form"
+            spellcheck="false" >
+        <div class="search-form-content">
+          <input class="search-input" id="search-input" title="search" type="text" />
+          <ul class="search-suggestions" id="search-suggestions" />
+        </div>
+      </form>
+    </div>
+
+    <div id="commands-container"></div>
 
     
   </div>
@@ -768,20 +788,12 @@
 
   class Help {
     constructor(options) {
-      this._el = $.el('#help');
+      this._el = $.el('#commands-container')
       this._commands = options.commands;
       this._newTab = options.newTab;
-      this._toggled = false;
-      this.toggle = this.toggle.bind(this);
       this._handleKeydown = this._handleKeydown.bind(this);
       this._buildCommands();
       this._registerEvents();
-    }
-
-    toggle(show) {
-      this._toggled = typeof show !== 'undefined' ? show : !this._toggled;
-      if (this._toggled) $.bodyClassAdd('help');
-      else $.bodyClassRemove('help');
     }
 
     _buildCommands() {
@@ -1441,10 +1453,6 @@
   });
 
   new Clock({
-    amPm: CONFIG.clockShowAmPm,
-    delimiter: CONFIG.clockDelimiter,
-    onClick: CONFIG.clockOnClickAction === 'Search' ? form.show : help.toggle,
-    showSeconds: CONFIG.clockShowSeconds,
     timeZone: CONFIG.clockTimeZone,
     twentyFourHour: CONFIG.clockTwentyFourHour,
   });
