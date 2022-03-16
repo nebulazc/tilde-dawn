@@ -383,10 +383,9 @@
     --base-font-weight-bold: 700;
     --base-font-weight-normal: 400;
     --clock-font-size: 3rem;
-    --command-height: 4.25rem;
-    --command-padding: calc(var(--command-height) / 2 - 1ch / 2);
-    --help-grid-columns: 1;
-    --help-grid-gap: 1rem;
+    --command-height: 3rem;
+    --command-padding: 1rem;
+    --help-grid-gap: 0rem;
     --search-input-font-size: 2rem;
     --search-input-text-align: left;
     --suggestion-height: 3rem;
@@ -561,17 +560,18 @@
     display: grid;
     grid-gap: var(--help-grid-gap);
     grid-template-columns: repeat(var(--help-grid-columns), 1fr);
-    padding: 6rem 0;
+    padding: 1rem;
     z-index: 2;
   }
 
   .command {
     display: flex;
-    background: var(--help-command-background);
-    border-radius: var(--base-border-radius);
+    
     opacity: 0.9;
     line-height: var(--command-height);
     text-decoration: none;
+    padding: 0;
+    margin: 0;
   }
 
   .command:hover {
@@ -584,9 +584,9 @@
 
   .command-key {
     width: var(--command-height);
-    border-radius: var(--base-border-radius);
     color: var(--command-color-complementary);
     font-weight: var(--base-font-weight-bold);
+    font-size: 1.2rem;
     text-align: center;
   }
 
