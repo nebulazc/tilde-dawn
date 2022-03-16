@@ -562,6 +562,7 @@
     grid-gap: var(--help-grid-gap);
     grid-template-columns: repeat(var(--help-grid-columns), 1fr);
     padding: 6rem 0;
+    z-index: 2;
   }
 
   .command {
@@ -602,10 +603,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    pointer-events: none;
+    z-index: 3;
   }
 
   body.form .search-form {
     opacity: 1;
+    pointer-events: all;
   }
 
   body.form #commands-container {
