@@ -545,7 +545,7 @@
     opacity: 0;
     transition: .2s ease-in-out;
     position: absolute;
-    width: 49rem;
+    width: 70rem;
     height: 32rem;
     display: flex;
     justify-content: center;
@@ -611,27 +611,25 @@
 </style>
 
 <div class="container">
+  <div id="form-container">
+    <form autocomplete="off"
+          class="search-form"
+          id="search-form"
+          spellcheck="false" >
+      <div class="search-form-content">
+        <input class="search-input" id="search-input" title="search" type="text" />
+        <ul class="search-suggestions" id="search-suggestions" />
+      </div>
+    </form>
+  </div>
+
   <div id="col-1" class="col">
     <time id="clock" class="clock"></time>
     <time id="date" class="calendar"></time>
     
   </div>
   <div id="col-2" class="col">
-    <div id="form-container">
-      <form autocomplete="off"
-            class="search-form"
-            id="search-form"
-            spellcheck="false" >
-        <div class="search-form-content">
-          <input class="search-input" id="search-input" title="search" type="text" />
-          <ul class="search-suggestions" id="search-suggestions" />
-        </div>
-      </form>
-    </div>
-
     <div id="commands-container"></div>
-
-    
   </div>
 </div>
 
@@ -1333,10 +1331,8 @@
 
       if (color) {
         this._formEl.style.background = color;
-        $.bodyClassAdd('color');
       } else {
-        this._formEl.style.background = '';
-        $.bodyClassRemove('color');
+        this._formEl.style.background = '#141414';
       }
     }
 
