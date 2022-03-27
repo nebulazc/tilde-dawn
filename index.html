@@ -451,7 +451,7 @@
     width: 70rem;
     height: 32rem;
     background-color: #242424;
-    box-shadow: 0 25px 50px -12px rgba(122, 122, 122, 0.22);
+    box-shadow: 0 25px 50px -12px rgba(122, 122, 122, 0);
   }
 
   #commands-container {
@@ -713,8 +713,7 @@
           timeZone: this._timeZone,
         })
         .replace(/:/g, '<br/>')
-        .replace(/^0/, '');
-      
+
         this._del.innerHTML = date
         .toLocaleString('fr-FR', {
           year: 'numeric',
