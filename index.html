@@ -20,7 +20,7 @@
      *
      * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
      */
-    clockTimeZone: "Europe/Warsaw",
+    clockTimeZone: 'Europe/Warsaw',
 
     /**
      * Type this to toggle the help menu.
@@ -48,7 +48,7 @@
      * The delimiter between a command key and your search query. For example,
      * to search GitHub for tilde, you'd type "g'tilde".
      */
-    querySearchDelimiter: ":",
+    querySearchDelimiter: ':',
 
     /**
      * Scripts allow you to open or search multiple sites at once. For example,
@@ -305,7 +305,6 @@
         search: '/mail/u/0/?q={}#search/{}',
         url: 'https://mail.google.com/mail/u/4',
       },
-
     ].map((command) => {
       const hsla = (hue, saturation = 'var(--command-color-saturation)') =>
         `hsla(${hue}, ${saturation}, var(--command-color-lightness), 1)`;
@@ -325,26 +324,43 @@
 
 <style>
   .tilde-dark {
-    --base-background: #141414;
-    --base-foreground: #aca9bb;
-    --command-color-complementary: #dfdfdf;
+    --base-background: #f4ded4;
+    --base-foreground: #434343;
+
+    --col1-background: transparent;
+    --col2-background: transparent;
+
+    --command-color-complementary: #343434;
     --command-color-highlight-foreground: var(--base-background);
-    --command-color-lightness: 40%;
+    --command-color-lightness: 80%;
     --command-color-saturation: 45%;
-    --help-command-background: #141414;
+    --help-command-background: #f4f4f4;
+  }
+
+  @font-face {
+    font-family: Maple Mono;
+    src: url('font/MapleMono-Regular.woff2');
+    font-weight: normal;
+  }
+
+  @font-face {
+    font-family: Maple Mono;
+    src: url('font/MapleMono-Bold.woff2');
+    font-weight: bold;
   }
 
   /* root variables */
 
   :root {
     --base-border-radius: 4.25rem;
-    --base-font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue,
-      Helvetica, Ubuntu, Roboto, Noto, Segoe UI, Arial, sans-serif;
+    --base-font-family: Maple Mono, -apple-system, BlinkMacSystemFont,
+      Helvetica Neue, Helvetica, Ubuntu, Roboto, Noto, Segoe UI, Arial,
+      sans-serif;
     --base-font-size: 18px;
     --base-font-weight-black: 900;
     --base-font-weight-bold: 700;
     --base-font-weight-normal: 400;
-    --clock-font-size: 3rem;
+    --clock-font-size: 4rem;
     --command-height: 4.28rem;
     --command-padding: 1rem;
     --help-grid-gap: 0rem;
@@ -397,8 +413,7 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    background: var(--base-background);
-    background-image: url("background.jpg");
+    background-color: var(--base-background);
     color: var(--base-foreground);
     display: flex;
     justify-content: center;
@@ -445,7 +460,6 @@
 
   .col {
     height: 100%;
-
   }
 
   .center {
@@ -469,12 +483,12 @@
     flex-direction: row;
     width: 70rem;
     height: 32rem;
-    background-color: #1d1d1d;
-    box-shadow: 0 25px 50px -12px rgba(122, 122, 122, 0);
+    background: var(--col2-background);
+    box-shadow: 0 25px 50px -12px rgba(122, 122, 122, 0.5);
   }
 
   #commands-container {
-    transition: .2s ease-in-out;
+    transition: 0.2s ease-in-out;
   }
 
   #col-1 {
@@ -485,8 +499,7 @@
     justify-content: center;
     align-items: center;
 
-    background-color: #202020;
-
+    background-color: var(--col1-background);
   }
 
   #col-2 {
@@ -496,14 +509,13 @@
   .clock {
     display: block;
     font-size: var(--clock-font-size);
-    line-height: 6rem;
+    line-height: var(--clock-font-size);
   }
 
   .calendar {
     margin-top: 6rem;
     display: block;
     font-size: 1.6rem;
-
   }
 
   .help {
@@ -532,7 +544,7 @@
 
   .command {
     display: flex;
-    
+
     opacity: 0.9;
     line-height: var(--command-height);
     text-decoration: none;
@@ -563,7 +575,7 @@
 
   .search-form {
     opacity: 0;
-    transition: .2s ease-in-out;
+    transition: 0.2s ease-in-out;
     position: absolute;
     width: 70rem;
     height: 32rem;
@@ -632,12 +644,19 @@
 
 <div class="container">
   <div id="form-container">
-    <form autocomplete="off"
-          class="search-form"
-          id="search-form"
-          spellcheck="false" >
+    <form
+      autocomplete="off"
+      class="search-form"
+      id="search-form"
+      spellcheck="false"
+    >
       <div class="search-form-content">
-        <input class="search-input" id="search-input" title="search" type="text" />
+        <input
+          class="search-input"
+          id="search-input"
+          title="search"
+          type="text"
+        />
         <ul class="search-suggestions" id="search-suggestions" />
       </div>
     </form>
@@ -646,7 +665,6 @@
   <div id="col-1" class="col">
     <time id="clock" class="clock"></time>
     <time id="date" class="calendar"></time>
-    
   </div>
   <div id="col-2" class="col">
     <div id="commands-container"></div>
@@ -730,9 +748,9 @@
           minute: 'numeric',
           timeZone: this._timeZone,
         })
-        .replace(/:/g, '<br/>')
+        .replace(/:/g, '<br/>');
 
-        this._del.innerHTML = date
+      this._del.innerHTML = date
         .toLocaleString('fr-FR', {
           year: 'numeric',
           month: 'long',
@@ -740,7 +758,6 @@
           timeZone: this._timeZone,
         })
         .replace(/^0/, '');
-
 
       this._cel.setAttribute('datetime', date.toTimeString());
       this._del.setAttribute('datetime', date.toTimeString());
@@ -754,7 +771,7 @@
 
   class Help {
     constructor(options) {
-      this._el = $.el('#commands-container')
+      this._el = $.el('#commands-container');
       this._commands = options.commands;
       this._newTab = options.newTab;
       this._handleKeydown = this._handleKeydown.bind(this);
@@ -1352,7 +1369,7 @@
       if (color) {
         this._formEl.style.background = color;
       } else {
-        this._formEl.style.background = '#141414';
+        this._formEl.style.background = 'var(--help-command-background)';
       }
     }
 
