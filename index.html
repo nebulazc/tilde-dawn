@@ -813,7 +813,7 @@
       const date = new Date();
 
       this._cel.innerHTML = date
-        .toLocaleString('fr-FR', {
+        .toLocaleString('en-GB', {
           hour12: !this._twentyFourHour,
           hour: 'numeric',
           minute: 'numeric',
@@ -822,7 +822,7 @@
         .replace(/:/g, '<br/>');
 
       this._del.innerHTML = date
-        .toLocaleString('fr-FR', {
+        .toLocaleString('en-GB', {
           year: 'numeric',
           month: 'long',
           day: 'numeric',
