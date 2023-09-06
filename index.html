@@ -90,7 +90,7 @@
      */
     suggestionDefaults: {
       0: ["0'8000", "0'8080"],
-      g: ['g/trending', 'g/akai-org/joystick_monorepo', 'gist.github.com'],
+      g: ['g/trending', 'gist.github.com'],
       m: ['m/mail/u/0', 'm/mail/u/1', 'm/mail/u/2', 'm/mail/u/3', 'm/mail/u/4'],
       o: ['o/discover/sets/new-for-you', 'o/discover/sets/weekly'],
       r: [],
@@ -335,6 +335,7 @@
     --command-color-lightness: 80%;
     --command-color-saturation: 45%;
     --help-command-background: #f4f4f4;
+    --loading-background: #dcebf5;
   }
 
   @font-face {
@@ -479,6 +480,7 @@
   /* main styles */
 
   .container {
+    position: relative;
     display: flex;
     flex-direction: row;
     width: 70rem;
@@ -640,6 +642,47 @@
   .search-suggestion-match {
     font-weight: var(--base-font-weight-normal);
   }
+
+  #loading-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  #loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--loading-background);
+    display: none;
+    z-index: 9999;
+  }
+
+  #loading svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  @keyframes fly-in {
+    0% {
+      transform: translate(0, 100%);
+    }
+    100% {
+      transform: translate(0, 0%);
+    }
+  }
+
+  #loading.show {
+    display: block !important;
+    animation: fly-in 0.2s;
+  }
 </style>
 
 <div class="container">
@@ -668,6 +711,34 @@
   </div>
   <div id="col-2" class="col">
     <div id="commands-container"></div>
+  </div>
+
+  <div id="loading-container">
+    <div id="loading">
+      <svg viewbox="0 0 16 16" width="100px" height="100px" fill="none">
+        <circle
+          cx="8"
+          cy="8"
+          r="6"
+          stroke="#434343"
+          data-fallback="edge"
+          stroke-width="2px"
+          transform="rotate(180, 8, 8)"
+          stroke-dasharray="0, 100"
+        >
+          <animate
+            attributeName="stroke-dasharray"
+            begin="indefinite"
+            calcMode="spline"
+            dur=".7s"
+            fill="freeze"
+            values="0; 20; 40; 50; 50"
+            keyTimes="0; 0.5; 0.7; 0.9; 1"
+            keySplines="0.5 0 0.5 1; 0.5 0 0.5 1; 0.5 0 0.5 1; 0.5 0 0.5 1"
+          />
+        </circle>
+      </svg>
+    </div>
   </div>
 </div>
 
@@ -1344,6 +1415,10 @@
     }
 
     _redirect(redirect, forceNewTab) {
+      const el = document.getElementById('loading');
+      el.classList.add('show');
+      el.children[0].children[0].children[0].beginElement();
+
       if (this._newTab || forceNewTab) {
         window.open(redirect, '_blank', 'noopener noreferrer');
       } else {
